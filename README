@@ -1,0 +1,57 @@
+-------------
+Introduction:
+-------------
+Directory Monitor is a program to monitor the changes that happens to directories mainly addition,
+updation and deletions of files and inform those changes to the MQTT Broker. Once started, the process
+will run endlessly untill it receives the MQTT message as given below. Directory which is to
+be monitored can be specified in the command line as well as mentioned in the MQTT message in format:
+
+# for starting directory monitoring:
+        mosquitto_pub -h localhost -p 1883 -t "thor/sync/config" -m "{\"cmd_code\":\"start_dir_monitoring\",\"msg\":{\"directories\":[\"data/assets\",\"data/users\"]}}"
+
+# for stopping directory monitoring:
+        mosquitto_pub -h localhost -p 1883 -t "thor/sync/config" -m "{\"cmd_code\":\"stop_dir_monitoring\",\"msg\":{\"directories\":[\"data/assets\",\"data/users\"]}}"
+
+# for killing the program:
+        mosquitto_pub -h localhost -p 1883 -t "thor/sync/config" -m "{\"cmd_code\":\"kill_dir_monitoring\"}"
+
+# for subscribing:
+        mosquitto_sub -h localhost -p 1883 -t "thor/sync/#"
+
+Please Note MQTT topics are hardcoded. For logging to specific directory changes,
+subscribe to topic 'thor/sync/<dir-name>' where dir-name is the directory name to be
+monitored.
+
+----------------
+Compile and run:
+----------------
+1. You will need 'libmosquitto' and json-c library built first. You can update the submodule
+   after cloning the project.
+    git submodule init
+    git submodule update
+
+2. Build the library by going into the lib folder. To build,
+   issue 'cmake -Bbuild' in the mosquitto folder and then 'make' inside build folder.
+   Same is for json-c library.
+
+3. Building the application is also same. Go to the project root folder and
+   then type 'cmake -Bbuild' and then inside build folder 'make'
+
+4. You can set MQTT host address at the compile time
+   by -DHOST=<host address> or by default it uses localhost and port 1883.
+
+5. By default, application log level is set to DEBUG level. You can set log level
+   at compile time in cmake options by -DLOG_LEVEL=<val>.
+   5-debug, 4-info, 3-warn, 2-error, 1-fatal
+
+7. After building the project, you can run as:
+        ./bin/app <dir1> <dir2> <dir3> ... <dirn>
+
+8. One custom run command present:
+        * First create data folder in project directory and
+          inside data create 5 folders namely users, tenants,
+          assets, procedures, results.
+        * After that in one terminal, to run file simulator script type
+          ./simulate_dir_changes.bash data/users data/tenants data/assets data/procedures data/results
+        * In other terminal, type 'make run'
+        * You can see the output of simulated changes.
