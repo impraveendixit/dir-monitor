@@ -17,7 +17,7 @@
 
 #define MQTT_PORT	1883
 
-#define TOPIC_PREFIX	stringify(thor/sync/)
+#define TOPIC_PREFIX	stringify(DIR_MONITOR/)
 
 /* Connection timeout in seconds */
 #define MQTT_CONNECTION_TIMEOUT	36000
