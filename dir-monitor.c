@@ -44,10 +44,7 @@ struct dir_monitor {
 static inline void __event_message_create(char *buff, int size,
 					  const char *tag, const char *status)
 {
-	snprintf(buff, size, "{\"cmd_code\":\"%s_jsonfile\","
-				"\"msg\":{\"tenant\":\"tenant\","
-				"\"status\":\"%s\",\"filename\":[",
-		 tag, status);
+	snprintf(buff, size, "{\"cmd_code\":\"%s\",\"msg\":{\"status\":\"%s\",\"filename\":[", tag, status);
 }
 
 static inline void __event_message_update(char *buff, int size,
