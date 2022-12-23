@@ -44,7 +44,8 @@ struct dir_monitor {
 static inline void __event_message_create(char *buff, int size,
 					  const char *tag, const char *status)
 {
-	snprintf(buff, size, "{\"cmd_code\":\"%s\",\"msg\":{\"status\":\"%s\",\"filename\":[", tag, status);
+	snprintf(buff, size, "{\"DirName\":\"%s\",\"Status\":\"%s\",\"Files\":[",
+		 tag, status);
 }
 
 static inline void __event_message_update(char *buff, int size,
@@ -57,9 +58,9 @@ static void __event_message_finalize(char *buff, int size, int len)
 {
 	/* Remove last comma */
 	if (buff[len - 1] == ',')
-		snprintf(buff + len - 1, size - len, "%s", "]}}");
+		snprintf(buff + len - 1, size - len, "%s", "]}");
 	else
-		snprintf(buff + len, size - len, "%s", "]}}");
+		snprintf(buff + len, size - len, "%s", "]}");
 }
 
 static void publish_message(struct mosquitto *mosq, const char *topic,
